@@ -78,12 +78,34 @@ def create_sequences(data, time_steps=60):
         X.append(data[i-time_steps:i])
         y.append(data[i, 3])  # 'Close' is at index 3
     return np.array(X), np.array(y)
-### 3️⃣ Model Architecture
-
-```python
+3️⃣ Model Architecture
 model = Sequential([
     GRU(100, return_sequences=False, input_shape=(X_train.shape[1], X_train.shape[2])),
     Dropout(0.2),
     Dense(1)
 ])
 model.compile(optimizer=Adam(learning_rate=0.001), loss='mean_squared_error')
+
+
+Layers Explanation:
+
+GRU Layer (100 units): Learns temporal patterns.
+
+Dropout Layer (0.2): Reduces overfitting.
+
+Dense Layer (1): Outputs predicted price.
+
+4️⃣ Model Training
+
+Uses 80% data for training and 20% for testing.
+
+Applies EarlyStopping to restore best weights when validation loss stops improving.
+
+5️⃣ Prediction and Evaluation
+
+Predicts future closing prices.
+
+Inverses scaling to original values.
+
+Plots actual vs predicted trends for each company.
+
